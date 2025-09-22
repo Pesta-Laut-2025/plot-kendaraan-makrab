@@ -4,163 +4,368 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Plot Kendaraan Panitia Makrab</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --success: #27ae60;
+            --warning: #e67e22;
+            --danger: #e74c3c;
+            --light: #f5f7fa;
+            --dark: #2c3e50;
+            --gray: #7f8c8d;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 20px;
-            background-color: #f5f7fa;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             color: #333;
+            min-height: 100vh;
+            padding: 20px;
         }
+        
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
-        h1 {
+        
+        header {
+            background: linear-gradient(120deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 25px;
             text-align: center;
-            color: #2c3e50;
-            margin-bottom: 20px;
         }
-        .form-container {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-        .form-group {
+        
+        h1 {
+            font-size: 2.5rem;
             margin-bottom: 10px;
+        }
+        
+        .description {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .content {
+            padding: 25px;
+        }
+        
+        .form-container {
+            background-color: var(--light);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        h2 {
+            color: var(--secondary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
             display: flex;
-            align-items: center;
+            flex-direction: column;
         }
+        
         label {
-            width: 150px;
             font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--dark);
         }
+        
         input, select {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            width: 200px;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
         }
+        
+        input:focus, select:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
         button {
-            background-color: #3498db;
+            background: linear-gradient(120deg, var(--primary), var(--secondary));
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
+            padding: 12px 25px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
-            margin-top: 10px;
+            font-size: 1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
+        
+        button i {
+            margin-right: 8px;
+        }
+        
         button:hover {
-            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
+        
+        .table-container {
+            overflow-x: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            background-color: white;
         }
+        
         th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
+            padding: 15px;
             text-align: left;
+            border-bottom: 1px solid #eee;
         }
+        
         th {
-            background-color: #3498db;
+            background-color: var(--primary);
             color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
         }
+        
         tr:nth-child(even) {
-            background-color: #f2f2f2;
+            background-color: #f8f9fa;
         }
+        
+        tr:hover {
+            background-color: #edf2f7;
+        }
+        
         .status-badge {
-            padding: 5px 10px;
-            border-radius: 12px;
+            padding: 6px 12px;
+            border-radius: 20px;
             font-size: 0.85em;
             font-weight: bold;
+            display: inline-block;
+            text-align: center;
+            min-width: 120px;
         }
+        
         .status-sudah {
-            background-color: #d4edda;
-            color: #155724;
+            background-color: #e6f7ee;
+            color: var(--success);
+            border: 1px solid #a3e6c5;
         }
+        
         .status-belum {
-            background-color: #f8d7da;
-            color: #721c24;
+            background-color: #fde8e8;
+            color: var(--danger);
+            border: 1px solid #f5a5a5;
         }
+        
         .actions {
             display: flex;
-            gap: 5px;
+            gap: 8px;
         }
+        
         .actions button {
-            padding: 5px 10px;
-            font-size: 0.8em;
-            margin-top: 0;
+            padding: 8px 12px;
+            font-size: 0.85rem;
         }
+        
         .delete-btn {
-            background-color: #e74c3c;
+            background: linear-gradient(120deg, #e74c3c, #c0392b);
         }
-        .delete-btn:hover {
-            background-color: #c0392b;
+        
+        .storage-info {
+            background-color: var(--light);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .storage-info button {
+            background: linear-gradient(120deg, var(--warning), var(--danger));
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--dark);
+            color: white;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            th, td {
+                padding: 10px;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+            
+            .storage-info {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Data Plot Kendaraan Panitia Makrab</h1>
+        <header>
+            <h1><i class="fas fa-car"></i> Data Plot Kendaraan Panitia Makrab</h1>
+            <p class="description">Form untuk menginput data kendaraan panitia Makrab. Data disimpan di browser Anda dan tidak akan hilang meskipun halaman ditutup.</p>
+        </header>
         
-        <div class="form-container">
-            <h2>Tambah Data Baru</h2>
-            <div class="form-group">
-                <label for="nama">Nama:</label>
-                <input type="text" id="nama" placeholder="Masukkan nama">
+        <div class="content">
+            <div class="form-container">
+                <h2><i class="fas fa-plus-circle"></i> Tambah Data Baru</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="nama">Nama Panitia:</label>
+                        <input type="text" id="nama" placeholder="Masukkan nama lengkap">
+                    </div>
+                    <div class="form-group">
+                        <label for="jenis">Jenis Kendaraan:</label>
+                        <select id="jenis">
+                            <option value="motor">Motor</option>
+                            <option value="mobil">Mobil</option>
+                            <option value="tidak">Tidak Punya Kendaraan</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="muat">Muat Penumpang:</label>
+                        <input type="number" id="muat" min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status Tumpangan:</label>
+                        <select id="status">
+                            <option value="sudah">Sudah Punya Tumpangan</option>
+                            <option value="belum">Belum Punya Tumpangan</option>
+                        </select>
+                    </div>
+                </div>
+                <button onclick="tambahData()"><i class="fas fa-plus"></i> Tambah Data</button>
             </div>
-            <div class="form-group">
-                <label for="jenis">Jenis Kendaraan:</label>
-                <select id="jenis">
-                    <option value="motor">Motor</option>
-                    <option value="mobil">Mobil</option>
-                    <option value="tidak">Tidak Punya Kendaraan</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="muat">Muat Penumpang:</label>
-                <input type="number" id="muat" min="0" value="0">
-            </div>
-            <div class="form-group">
-                <label for="status">Status:</label>
-                <select id="status">
-                    <option value="sudah">Sudah Punya Tumpangan</option>
-                    <option value="belum">Belum Punya Tumpangan</option>
-                </select>
-            </div>
-            <button onclick="tambahData()">Tambah Data</button>
-        </div>
 
-        <table id="tabelKendaraan">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Nama</th>
-                    <th>Jenis Kendaraan</th>
-                    <th>Muat Penumpang</th>
-                    <th>Status</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Data akan ditambahkan di sini melalui JavaScript -->
-            </tbody>
-        </table>
+            <h2><i class="fas fa-table"></i> Data Kendaraan</h2>
+            <div class="table-container">
+                <table id="tabelKendaraan">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>Jenis Kendaraan</th>
+                            <th>Muat Penumpang</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data akan dimuat dari localStorage -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="storage-info">
+                <div>
+                    <p><strong>Penyimpanan Data:</strong> Data disimpan secara lokal di browser Anda menggunakan localStorage.</p>
+                    <p>Data akan tetap tersimpan meskipun Anda menutup browser atau me-restart komputer.</p>
+                </div>
+                <button onclick="hapusSemuaData()"><i class="fas fa-trash"></i> Hapus Semua Data</button>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 Data Plot Kendaraan Panitia Makrab | Data Tersimpan di Browser Anda</p>
+        </footer>
     </div>
 
     <script>
+        // Inisialisasi data counter
         let dataCounter = 1;
         const tabel = document.getElementById('tabelKendaraan').getElementsByTagName('tbody')[0];
         
+        // Fungsi untuk memuat data dari localStorage
+        function muatDataDariPenyimpanan() {
+            const dataTersimpan = localStorage.getItem('dataKendaraanMakrab');
+            
+            if (dataTersimpan) {
+                const data = JSON.parse(dataTersimpan);
+                dataCounter = data.length + 1;
+                
+                // Kosongkan tabel
+                tabel.innerHTML = '';
+                
+                // Isi tabel dengan data yang tersimpan
+                data.forEach((item, index) => {
+                    const newRow = tabel.insertRow();
+                    newRow.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${item.nama}</td>
+                        <td>${item.jenis}</td>
+                        <td>${item.muat}</td>
+                        <td><span class="status-badge status-${item.statusValue}">${item.status}</span></td>
+                        <td class="actions">
+                            <button class="delete-btn" onclick="hapusData(${index})"><i class="fas fa-trash"></i> Hapus</button>
+                        </td>
+                    `;
+                });
+            }
+        }
+        
+        // Fungsi untuk menyimpan data ke localStorage
+        function simpanDataKePenyimpanan(data) {
+            localStorage.setItem('dataKendaraanMakrab', JSON.stringify(data));
+        }
+        
+        // Fungsi untuk mendapatkan semua data dari localStorage
+        function dapatkanSemuaData() {
+            const dataTersimpan = localStorage.getItem('dataKendaraanMakrab');
+            return dataTersimpan ? JSON.parse(dataTersimpan) : [];
+        }
+        
+        // Fungsi untuk menambah data
         function tambahData() {
-            const nama = document.getElementById('nama').value;
+            const nama = document.getElementById('nama').value.trim();
             const jenis = document.getElementById('jenis');
             const jenisText = jenis.options[jenis.selectedIndex].text;
             const muat = document.getElementById('muat').value;
@@ -173,38 +378,76 @@
                 return;
             }
             
-            const newRow = tabel.insertRow();
-            newRow.innerHTML = `
-                <td>${dataCounter}</td>
-                <td>${nama}</td>
-                <td>${jenisText}</td>
-                <td>${muat}</td>
-                <td><span class="status-badge status-${statusValue}">${statusText}</span></td>
-                <td class="actions">
-                    <button class="delete-btn" onclick="hapusData(this)">Hapus</button>
-                </td>
-            `;
+            if (muat < 0) {
+                alert('Muat penumpang tidak boleh negatif!');
+                return;
+            }
             
-            dataCounter++;
+            // Dapatkan data yang sudah ada
+            const dataSebelumnya = dapatkanSemuaData();
+            
+            // Tambahkan data baru
+            dataSebelumnya.push({
+                nama: nama,
+                jenis: jenisText,
+                muat: muat,
+                status: statusText,
+                statusValue: statusValue
+            });
+            
+            // Simpan data ke localStorage
+            simpanDataKePenyimpanan(dataSebelumnya);
+            
+            // Muat ulang tabel
+            muatDataDariPenyimpanan();
             
             // Reset form
             document.getElementById('nama').value = '';
             document.getElementById('jenis').selectedIndex = 0;
             document.getElementById('muat').value = '0';
             document.getElementById('status').selectedIndex = 0;
+            
+            // Berikan feedback
+            alert('Data berhasil ditambahkan dan disimpan!');
         }
         
-        function hapusData(button) {
-            const row = button.parentNode.parentNode;
-            row.parentNode.removeChild(row);
-            
-            // Update nomor urut
-            const rows = tabel.getElementsByTagName('tr');
-            for (let i = 0; i < rows.length; i++) {
-                rows[i].cells[0].textContent = i + 1;
+        // Fungsi untuk menghapus data
+        function hapusData(index) {
+            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                // Dapatkan data yang sudah ada
+                const dataSebelumnya = dapatkanSemuaData();
+                
+                // Hapus data berdasarkan index
+                dataSebelumnya.splice(index, 1);
+                
+                // Simpan data ke localStorage
+                simpanDataKePenyimpanan(dataSebelumnya);
+                
+                // Muat ulang tabel
+                muatDataDariPenyimpanan();
+                
+                alert('Data berhasil dihapus!');
             }
-            dataCounter = rows.length + 1;
         }
+        
+        // Fungsi untuk menghapus semua data
+        function hapusSemuaData() {
+            if (confirm('Apakah Anda yakin ingin menghapus SEMUA data? Tindakan ini tidak dapat dibatalkan.')) {
+                // Hapus semua data dari localStorage
+                localStorage.removeItem('dataKendaraanMakrab');
+                
+                // Muat ulang tabel
+                muatDataDariPenyimpanan();
+                
+                // Reset counter
+                dataCounter = 1;
+                
+                alert('Semua data berhasil dihapus!');
+            }
+        }
+        
+        // Muat data saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', muatDataDariPenyimpanan);
     </script>
 </body>
 </html>
