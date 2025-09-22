@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Plot Kendaraan Panitia Makrab</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        .form-container {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        label {
+            width: 150px;
+            font-weight: bold;
+        }
+        input, select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 200px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        .status-sudah {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-belum {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .actions {
+            display: flex;
+            gap: 5px;
+        }
+        .actions button {
+            padding: 5px 10px;
+            font-size: 0.8em;
+            margin-top: 0;
+        }
+        .delete-btn {
+            background-color: #e74c3c;
+        }
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Data Plot Kendaraan Panitia Makrab</h1>
+        
+        <div class="form-container">
+            <h2>Tambah Data Baru</h2>
+            <div class="form-group">
+                <label for="nama">Nama:</label>
+                <input type="text" id="nama" placeholder="Masukkan nama">
+            </div>
+            <div class="form-group">
+                <label for="jenis">Jenis Kendaraan:</label>
+                <select id="jenis">
+                    <option value="motor">Motor</option>
+                    <option value="mobil">Mobil</option>
+                    <option value="tidak">Tidak Punya Kendaraan</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="muat">Muat Penumpang:</label>
+                <input type="number" id="muat" min="0" value="0">
+            </div>
+            <div class="form-group">
+                <label for="status">Status:</label>
+                <select id="status">
+                    <option value="sudah">Sudah Punya Tumpangan</option>
+                    <option value="belum">Belum Punya Tumpangan</option>
+                </select>
+            </div>
+            <button onclick="tambahData()">Tambah Data</button>
+        </div>
+
+        <table id="tabelKendaraan">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Jenis Kendaraan</th>
+                    <th>Muat Penumpang</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data akan ditambahkan di sini melalui JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let dataCounter = 1;
+        const tabel = document.getElementById('tabelKendaraan').getElementsByTagName('tbody')[0];
+        
+        function tambahData() {
+            const nama = document.getElementById('nama').value;
+            const jenis = document.getElementById('jenis');
+            const jenisText = jenis.options[jenis.selectedIndex].text;
+            const muat = document.getElementById('muat').value;
+            const status = document.getElementById('status');
+            const statusText = status.options[status.selectedIndex].text;
+            const statusValue = status.value;
+            
+            if (!nama) {
+                alert('Nama harus diisi!');
+                return;
+            }
+            
+            const newRow = tabel.insertRow();
+            newRow.innerHTML = `
+                <td>${dataCounter}</td>
+                <td>${nama}</td>
+                <td>${jenisText}</td>
+                <td>${muat}</td>
+                <td><span class="status-badge status-${statusValue}">${statusText}</span></td>
+                <td class="actions">
+                    <button class="delete-btn" onclick="hapusData(this)">Hapus</button>
+                </td>
+            `;
+            
+            dataCounter++;
+            
+            // Reset form
+            document.getElementById('nama').value = '';
+            document.getElementById('jenis').selectedIndex = 0;
+            document.getElementById('muat').value = '0';
+            document.getElementById('status').selectedIndex = 0;
+        }
+        
+        function hapusData(button) {
+            const row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+            
+            // Update nomor urut
+            const rows = tabel.getElementsByTagName('tr');
+            for (let i = 0; i < rows.length; i++) {
+                rows[i].cells[0].textContent = i + 1;
+            }
+            dataCounter = rows.length + 1;
+        }
+    </script>
+</body>
+</html>
